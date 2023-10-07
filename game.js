@@ -6,7 +6,7 @@ class Intro extends Phaser.Scene {
         this.load.path = "./assets/";
         this.load.audio('testdrone', "TestDrone.mp3")
         this.load.image("whisperinganomalyphoto", "WhisperingAnomaly.png")
-        this.load.audio('whisperinganomaly', 'WhisperingAnomaly.mp3');
+        this.load.audio('endinganomaly', 'EndingAnomaly.mp3');
         this.load.audio('tape2intro', 'Tape2Intro.mp3');
     }
     create() {
@@ -20,7 +20,7 @@ class Intro extends Phaser.Scene {
         this.input.on('pointerdown', () => {
             tape2intro.play();
             this.cameras.main.fadeOut( 0,0,0);
-           this.time.delayedCall(17000, () => this.scene.start('parta'));
+           this.time.delayedCall(17000, () => this.scene.start('ending'));
         });
     }
 }
@@ -42,9 +42,24 @@ class PartA extends Phaser.Scene {
     }
 }
 
+class Ending extends Phaser.Scene {
+    constructor() {
+        super('ending');
+    }
+    create() {
+        let endinganomaly = this.sound.add('endinganomaly');
+        let whisperinganomaly = this.add.image('whisperinganomalyphoto');
+        endinganomaly.play();
+       
+        let screenCenterX = this.cameras.main.worldView.x + this.cameras.main.width / 2;
+        let screenCenterY = this.cameras.main.worldView.y + this.cameras.main.height / 2;
+        this.time.delayedCall(20000, () => this.imageObject = this.add.image(screenCenterX, screenCenterY, whisperinganomaly));
+    }
+}
+
 new Phaser.Game({
     width: 1024,
     height: 540,
     backgroundColor: 0x000000,
-    scene: [Intro, PartA],
+    scene: [Intro, PartA, Ending],
 });
