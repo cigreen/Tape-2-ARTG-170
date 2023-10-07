@@ -48,12 +48,17 @@ class Ending extends Phaser.Scene {
     }
     create() {
         let endinganomaly = this.sound.add('endinganomaly');
-        let whisperinganomaly = this.add.image('whisperinganomalyphoto');
         endinganomaly.play();
-       
         let screenCenterX = this.cameras.main.worldView.x + this.cameras.main.width / 2;
         let screenCenterY = this.cameras.main.worldView.y + this.cameras.main.height / 2;
-        this.time.delayedCall(20000, () => this.imageObject = this.add.image(screenCenterX, screenCenterY, whisperinganomaly));
+        this.time.delayedCall(20000, () => this.imageObject = this.add.image(
+            screenCenterX,
+            screenCenterY,
+            "whisperinganomalyphoto",
+    )
+        .setScale(0.15) // FIX THIS
+    )   
+    this.time.delayedCall(61000, () => this.cameras.main.fadeOut(0,0,0));
     }
 }
 
