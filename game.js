@@ -8,6 +8,9 @@ class Intro extends Phaser.Scene {
         this.load.image("whisperinganomalyphoto", "WhisperingAnomaly.png")
         this.load.audio('endinganomaly', 'EndingAnomaly.mp3');
         this.load.audio('tape2intro', 'Tape2Intro.mp3');
+        this.load.audio('speakerbprompt', 'SpeakerBPrompt.mp3');
+        this.load.audio('speakercprompt', 'SpeakerCPrompt.mp3');
+        this.load.audio('speakerB', 'voiceB.mp3');
     }
     create() {
     // center the text to the middle of the screen. code from https://www.stephengarside.co.uk/blog/phaser-3-center-text-in-middle-of-screen/
@@ -20,7 +23,7 @@ class Intro extends Phaser.Scene {
         this.input.on('pointerdown', () => {
             tape2intro.play();
             this.cameras.main.fadeOut( 0,0,0);
-           this.time.delayedCall(17000, () => this.scene.start('ending'));
+            this.time.delayedCall(17000, () => this.scene.start('parta'));
         });
     }
 }
@@ -38,7 +41,58 @@ class PartA extends Phaser.Scene {
             testdrone.loop = true;
             testdrone.play();
             this.cameras.main.fadeOut( 0,0,0);
+            this.time.delayedCall(14000, () => this.scene.start('partb')); // FIX THE TIMING ONCE YOU GET AUDIO ASSETS.
         })
+    }
+}
+
+class PartB extends Phaser.Scene {
+    constructor() {
+        super('partb');
+    }
+    create() {
+        let testdrone = this.sound.add('testdrone');
+        let speakerB = this.sound.add('speakerB');
+        let speakerbprompt = this.sound.add('speakerbprompt');
+        speakerbprompt.play();
+        let screenCenterX = this.cameras.main.worldView.x + this.cameras.main.width / 2;
+        let screenCenterY = this.cameras.main.worldView.y + this.cameras.main.height / 2;
+        this.time.delayedCall(2500, () => this.add.text(screenCenterX, screenCenterY, 'Listen to Speaker B').setOrigin(0.5));
+        //this.add.text(screenCenterX, screenCenterY, 'Listen to Speaker B').setOrigin(0.5);
+        this.input.on('pointerdown', () => {
+            testdrone.loop = true;
+            testdrone.play();
+            speakerB.play();
+            this.cameras.main.fadeOut( 0,0,0);
+            this.time.delayedCall(14000, () => this.scene.start('partc'));
+        });
+    }
+}
+
+class PartC extends Phaser.Scene {
+    constructor() {
+        super('partc');
+    }
+    create() {
+        let speakercprompt = this.sound.add('speakercprompt');
+        speakercprompt.play();
+        let screenCenterX = this.cameras.main.worldView.x + this.cameras.main.width / 2;
+        let screenCenterY = this.cameras.main.worldView.y + this.cameras.main.height / 2;
+        this.time.delayedCall(2500, () => this.add.text(screenCenterX, screenCenterY, 'Listen to Speaker C').setOrigin(0.5));
+        this.input.on('pointerdown', () => {
+        //    speakerC.play();
+            this.cameras.main.fadeOut( 0,0,0);
+            this.time.delayedCall(14000, () => this.scene.start('choose'));
+        });
+    }
+}
+
+class Choose extends Phaser.Scene {
+    constructor() {
+        super('choose');
+    }
+    create() {
+        
     }
 }
 
@@ -66,5 +120,5 @@ new Phaser.Game({
     width: 1024,
     height: 540,
     backgroundColor: 0x000000,
-    scene: [Intro, PartA, Ending],
+    scene: [Intro, PartA, PartB, PartC, Choose, Ending],
 });
