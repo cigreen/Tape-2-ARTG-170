@@ -99,6 +99,17 @@ class Choose extends Phaser.Scene {
     }
     create() {
         let selectanomaly = this.sound.add('selectanomaly');
+        let screenCenterX = this.cameras.main.worldView.x + this.cameras.main.width / 2;
+        let screenCenterY = this.cameras.main.worldView.y + this.cameras.main.height / 2;
+        selectanomaly.play();
+        this.time.delayedCall(2500, () => this.add.text(screenCenterX - 200, screenCenterY, 'Speaker A').setOrigin(0.5));
+        this.time.delayedCall(2500, () => this.add.text(screenCenterX, screenCenterY, 'Speaker B').setOrigin(0.5));
+        this.time.delayedCall(2500, () => this.add.text(screenCenterX + 200, screenCenterY, 'Speaker C').setOrigin(0.5));
+        this.input.on('pointerdown', () => {
+            this.sound.get('testdrone').stop();
+            this.cameras.main.fadeOut( 0,0,0);
+            this.scene.start('ending');
+        });       
     }
 }
 
