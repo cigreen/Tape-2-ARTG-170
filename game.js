@@ -11,6 +11,9 @@ class Intro extends Phaser.Scene {
         this.load.audio('speakerbprompt', 'SpeakerBPrompt.mp3');
         this.load.audio('speakercprompt', 'SpeakerCPrompt.mp3');
         this.load.audio('speakerB', 'voiceB.mp3');
+        this.load.audio('speakera', 'SpeakerA.mp3');
+        this.load.audio('speakerc', 'SpeakerC.mp3');
+        this.load.audio('selectanomaly', 'SelectAnomaly.mp3');
     }
     create() {
     // center the text to the middle of the screen. code from https://www.stephengarside.co.uk/blog/phaser-3-center-text-in-middle-of-screen/
@@ -34,14 +37,16 @@ class PartA extends Phaser.Scene {
     }
     create() {
         let testdrone = this.sound.add('testdrone');
+        let speakerA = this.sound.add('speakera');
         let screenCenterX = this.cameras.main.worldView.x + this.cameras.main.width / 2;
         let screenCenterY = this.cameras.main.worldView.y + this.cameras.main.height / 2;
         this.add.text(screenCenterX, screenCenterY, 'Listen to Speaker A').setOrigin(0.5);
         this.input.on('pointerdown', () => {
             testdrone.loop = true;
             testdrone.play();
+            speakerA.play();
             this.cameras.main.fadeOut( 0,0,0);
-            this.time.delayedCall(14000, () => this.scene.start('partb')); // FIX THE TIMING ONCE YOU GET AUDIO ASSETS.
+            this.time.delayedCall(12000, () => this.scene.start('partb')); // FIX THE TIMING ONCE YOU GET AUDIO ASSETS.
         })
     }
 }
@@ -60,8 +65,8 @@ class PartB extends Phaser.Scene {
         this.time.delayedCall(2500, () => this.add.text(screenCenterX, screenCenterY, 'Listen to Speaker B').setOrigin(0.5));
         //this.add.text(screenCenterX, screenCenterY, 'Listen to Speaker B').setOrigin(0.5);
         this.input.on('pointerdown', () => {
-            testdrone.loop = true;
-            testdrone.play();
+            //testdrone.loop = true;
+            //testdrone.play();
             speakerB.play();
             this.cameras.main.fadeOut( 0,0,0);
             this.time.delayedCall(14000, () => this.scene.start('partc'));
@@ -75,14 +80,15 @@ class PartC extends Phaser.Scene {
     }
     create() {
         let speakercprompt = this.sound.add('speakercprompt');
+        let speakerC = this.sound.add('speakerc');
         speakercprompt.play();
         let screenCenterX = this.cameras.main.worldView.x + this.cameras.main.width / 2;
         let screenCenterY = this.cameras.main.worldView.y + this.cameras.main.height / 2;
         this.time.delayedCall(2500, () => this.add.text(screenCenterX, screenCenterY, 'Listen to Speaker C').setOrigin(0.5));
         this.input.on('pointerdown', () => {
-        //    speakerC.play();
+            speakerC.play();
             this.cameras.main.fadeOut( 0,0,0);
-            this.time.delayedCall(14000, () => this.scene.start('choose'));
+            this.time.delayedCall(27000, () => this.scene.start('choose'));
         });
     }
 }
@@ -92,7 +98,7 @@ class Choose extends Phaser.Scene {
         super('choose');
     }
     create() {
-        
+        let selectanomaly = this.sound.add('selectanomaly');
     }
 }
 
