@@ -24,9 +24,12 @@ class Intro extends Phaser.Scene {
         this.add.text(screenCenterX + 320, screenCenterY + 200, '(Audio is required for this test.)').setOrigin(0.5);
         
         this.input.on('pointerdown', () => {
-            tape2intro.play();
-            this.cameras.main.fadeOut( 0,0,0);
-            this.time.delayedCall(17000, () => this.scene.start('parta'));
+            if (!this.buttonPressed) {
+                this.buttonPressed = true;
+                tape2intro.play();
+                this.cameras.main.fadeOut( 0,0,0);
+                this.time.delayedCall(17000, () => this.scene.start('parta'));
+            }
         });
     }
 }
@@ -42,11 +45,14 @@ class PartA extends Phaser.Scene {
         let screenCenterY = this.cameras.main.worldView.y + this.cameras.main.height / 2;
         this.add.text(screenCenterX, screenCenterY, 'Listen to Speaker A').setOrigin(0.5);
         this.input.on('pointerdown', () => {
-            testdrone.loop = true;
-            testdrone.play();
-            speakerA.play();
-            this.cameras.main.fadeOut( 0,0,0);
-            this.time.delayedCall(12000, () => this.scene.start('partb')); // FIX THE TIMING ONCE YOU GET AUDIO ASSETS.
+            if (!this.buttonPressed) {
+                this.buttonPressed = true;
+                testdrone.loop = true;
+                testdrone.play();
+                speakerA.play();
+                this.cameras.main.fadeOut( 0,0,0);
+                this.time.delayedCall(12000, () => this.scene.start('partb')); // FIX THE TIMING ONCE YOU GET AUDIO ASSETS.
+            }
         })
     }
 }
@@ -65,11 +71,12 @@ class PartB extends Phaser.Scene {
         this.time.delayedCall(2500, () => this.add.text(screenCenterX, screenCenterY, 'Listen to Speaker B').setOrigin(0.5));
         //this.add.text(screenCenterX, screenCenterY, 'Listen to Speaker B').setOrigin(0.5);
         this.input.on('pointerdown', () => {
-            //testdrone.loop = true;
-            //testdrone.play();
-            speakerB.play();
-            this.cameras.main.fadeOut( 0,0,0);
-            this.time.delayedCall(14000, () => this.scene.start('partc'));
+            if (!this.buttonPressed) {
+                this.buttonPressed = true;
+                speakerB.play();
+                this.cameras.main.fadeOut( 0,0,0);
+                this.time.delayedCall(14000, () => this.scene.start('partc'));
+            }
         });
     }
 }
@@ -86,9 +93,12 @@ class PartC extends Phaser.Scene {
         let screenCenterY = this.cameras.main.worldView.y + this.cameras.main.height / 2;
         this.time.delayedCall(2500, () => this.add.text(screenCenterX, screenCenterY, 'Listen to Speaker C').setOrigin(0.5));
         this.input.on('pointerdown', () => {
-            speakerC.play();
-            this.cameras.main.fadeOut( 0,0,0);
-            this.time.delayedCall(27000, () => this.scene.start('choose'));
+            if (!this.buttonPressed) {
+                this.buttonPressed = true;
+                speakerC.play();
+                this.cameras.main.fadeOut( 0,0,0);
+                this.time.delayedCall(27000, () => this.scene.start('choose'));
+            }
         });
     }
 }
@@ -134,8 +144,8 @@ class Ending extends Phaser.Scene {
 }
 
 new Phaser.Game({
-    width: 1024,
-    height: 540,
+    width: window.innerWidth,
+    height: window.innerHeight,
     backgroundColor: 0x000000,
     scene: [Intro, PartA, PartB, PartC, Choose, Ending],
 });
