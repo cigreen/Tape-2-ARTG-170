@@ -55,7 +55,7 @@ class PartA extends Phaser.Scene {
                 testdrone.play();
                 speakerA.play();
                 this.cameras.main.fadeOut( 0,0,0);
-                this.time.delayedCall(15000, () => this.scene.start('partb')); // FIX THE TIMING ONCE YOU GET AUDIO ASSETS.
+                this.time.delayedCall(12000, () => this.scene.start('partb')); // FIX THE TIMING ONCE YOU GET AUDIO ASSETS.
             }
         })
     }
