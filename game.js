@@ -14,6 +14,7 @@ class Intro extends Phaser.Scene {
         this.load.audio('speakera', 'SpeakerA.mp3');
         this.load.audio('speakerc', 'SpeakerC.mp3');
         this.load.audio('selectanomaly', 'SelectAnomaly.mp3');
+        this.load.audio('goodendinganomaly', 'GoodEndingAnomaly.mp3');
     }
     create() {
     // center the text to the middle of the screen. code from https://www.stephengarside.co.uk/blog/phaser-3-center-text-in-middle-of-screen/
@@ -121,28 +122,49 @@ class Choose extends Phaser.Scene {
         let screenCenterX = this.cameras.main.worldView.x + this.cameras.main.width / 2;
         let screenCenterY = this.cameras.main.worldView.y + this.cameras.main.height / 2;
         selectanomaly.play();
-        this.time.delayedCall (2500, () => this.add.rectangle(screenCenterX - 300,screenCenterY, 240, 60, 0x808080));
+        this.time.delayedCall (2500, () => this.add.rectangle(screenCenterX - 300,screenCenterY, 240, 60, 0x808080).setInteractive()
+        .on('pointerdown', () => {
+            if (!this.buttonPressed) {
+                this.buttonPressed = true;
+                this.sound.get('testdrone').stop();
+                this.cameras.main.fadeOut( 0,0,0);
+                this.scene.start('badending');
+            }
+        })
+        );
         this.time.delayedCall (2500, () => this.add.rectangle(screenCenterX - 300, screenCenterY, 230, 50, 0xd3d3d3));
         this.time.delayedCall(2500, () => this.add.text(screenCenterX - 300, screenCenterY, 'Speaker A', {color: 0xffffff}).setOrigin(0.5));
 
-        this.time.delayedCall (2500, () => this.add.rectangle(screenCenterX,screenCenterY, 240, 60, 0x808080));
+        this.time.delayedCall (2500, () => this.add.rectangle(screenCenterX,screenCenterY, 240, 60, 0x808080).setInteractive()
+        .on('pointerdown', () => {
+            if (!this.buttonPressed) {
+                this.buttonPressed = true;
+                this.sound.get('testdrone').stop();
+                this.cameras.main.fadeOut( 0,0,0);
+                this.scene.start('badending');
+            }
+        }));
         this.time.delayedCall (2500, () => this.add.rectangle(screenCenterX, screenCenterY, 230, 50, 0xd3d3d3));
         this.time.delayedCall(2500, () => this.add.text(screenCenterX, screenCenterY, 'Speaker B', {color: 0xffffff}).setOrigin(0.5));
 
-        this.time.delayedCall (2500, () => this.add.rectangle(screenCenterX + 300,screenCenterY, 240, 60, 0x808080));
+        this.time.delayedCall (2500, () => this.add.rectangle(screenCenterX + 300,screenCenterY, 240, 60, 0x808080).setInteractive()
+        .on('pointerdown', () => {
+            if (!this.buttonPressed) {
+                this.buttonPressed = true;
+                this.sound.get('testdrone').stop();
+                this.cameras.main.fadeOut( 0,0,0);
+                this.scene.start('goodending');
+            }
+        }));
         this.time.delayedCall (2500, () => this.add.rectangle(screenCenterX + 300, screenCenterY, 230, 50, 0xd3d3d3));
         this.time.delayedCall(2500, () => this.add.text(screenCenterX + 300, screenCenterY, 'Speaker C', {color: 0xffffff}).setOrigin(0.5));
-        this.input.on('pointerdown', () => {
-            this.sound.get('testdrone').stop();
-            this.cameras.main.fadeOut( 0,0,0);
-            this.scene.start('ending');
-        });       
+   
     }
 }
 
-class Ending extends Phaser.Scene {
+class BadEnding extends Phaser.Scene {
     constructor() {
-        super('ending');
+        super('badending');
     }
     create() {
         let endinganomaly = this.sound.add('endinganomaly');
@@ -160,9 +182,29 @@ class Ending extends Phaser.Scene {
     }
 }
 
+class GoodEnding extends Phaser.Scene {
+    constructor() {
+        super('goodending');
+    }
+    create() {
+        let goodendinganomaly = this.sound.add('goodendinganomaly');
+        goodendinganomaly.play();
+        let screenCenterX = this.cameras.main.worldView.x + this.cameras.main.width / 2;
+        let screenCenterY = this.cameras.main.worldView.y + this.cameras.main.height / 2;
+        this.time.delayedCall(19736, () => this.imageObject = this.add.image(
+            screenCenterX,
+            screenCenterY,
+            "whisperinganomalyphoto",
+    )
+        .setScale(0.15) // FIX THIS
+    )   
+    this.time.delayedCall(61000, () => this.cameras.main.fadeOut(0,0,0));
+    }
+}
+
 new Phaser.Game({
     width: window.innerWidth,
     height: window.innerHeight,
     backgroundColor: 0x000000,
-    scene: [Intro, PartA, PartB, PartC, Choose, Ending],
+    scene: [Intro, PartA, PartB, PartC, Choose, BadEnding, GoodEnding],
 });
