@@ -20,19 +20,18 @@ class Intro extends Phaser.Scene {
         let screenCenterX = this.cameras.main.worldView.x + this.cameras.main.width / 2;
         let screenCenterY = this.cameras.main.worldView.y + this.cameras.main.height / 2;
         let tape2intro = this.sound.add('tape2intro');
-        this.add.rectangle(screenCenterX,screenCenterY, 240, 60, 0x808080)
-        this.add.rectangle(screenCenterX, screenCenterY, 230, 50, 0xd3d3d3);
-        this.add.text(screenCenterX, screenCenterY, 'Click to insert tape 2.', {color: 0xffffff}).setOrigin(0.5);
-        this.add.text(screenCenterX + 320, screenCenterY + 200, '(Audio is required for this test.)').setOrigin(0.5);
-        
-        this.input.on('pointerdown', () => {
+        this.add.rectangle(screenCenterX,screenCenterY, 240, 60, 0x808080).setInteractive()
+        .on('pointerdown', () => {
             if (!this.buttonPressed) {
                 this.buttonPressed = true;
                 tape2intro.play();
                 this.cameras.main.fadeOut( 0,0,0);
-                this.time.delayedCall(17000, () => this.scene.start('parta'));
+                this.time.delayedCall(17000, () => this.scene.start('parta')); 
             }
-        });
+        })
+        this.add.rectangle(screenCenterX, screenCenterY, 230, 50, 0xd3d3d3);
+        this.add.text(screenCenterX, screenCenterY, 'Click to insert tape 2.', {color: 0xffffff}).setOrigin(0.5);
+        this.add.text(screenCenterX + 320, screenCenterY + 200, '(Audio is required for this test.)').setOrigin(0.5);
     }
 }
 
@@ -45,10 +44,9 @@ class PartA extends Phaser.Scene {
         let speakerA = this.sound.add('speakera');
         let screenCenterX = this.cameras.main.worldView.x + this.cameras.main.width / 2;
         let screenCenterY = this.cameras.main.worldView.y + this.cameras.main.height / 2;
-        this.add.rectangle(screenCenterX,screenCenterY, 240, 60, 0x808080)
-        this.add.rectangle(screenCenterX, screenCenterY, 230, 50, 0xd3d3d3);
-        this.add.text(screenCenterX, screenCenterY, 'Listen to Speaker A', {color: 0xffffff}).setOrigin(0.5);
-        this.input.on('pointerdown', () => {
+        // 0x808080 is the interactive square
+        this.add.rectangle(screenCenterX,screenCenterY, 240, 60, 0x808080).setInteractive()
+        .on('pointerdown', () => {
             if (!this.buttonPressed) {
                 this.buttonPressed = true;
                 testdrone.loop = true;
@@ -58,6 +56,8 @@ class PartA extends Phaser.Scene {
                 this.time.delayedCall(12000, () => this.scene.start('partb')); // FIX THE TIMING ONCE YOU GET AUDIO ASSETS.
             }
         })
+        this.add.rectangle(screenCenterX, screenCenterY, 230, 50, 0xd3d3d3);
+        this.button = this.add.text(screenCenterX, screenCenterY, 'Listen to Speaker A', {color: 0xffffff}).setOrigin(0.5);
     }
 }
 
@@ -72,17 +72,18 @@ class PartB extends Phaser.Scene {
         speakerbprompt.play();
         let screenCenterX = this.cameras.main.worldView.x + this.cameras.main.width / 2;
         let screenCenterY = this.cameras.main.worldView.y + this.cameras.main.height / 2;
-        this.time.delayedCall (2500, () => this.add.rectangle(screenCenterX,screenCenterY, 240, 60, 0x808080));
-        this.time.delayedCall (2500, () => this.add.rectangle(screenCenterX, screenCenterY, 230, 50, 0xd3d3d3));
-        this.time.delayedCall(2500, () => this.add.text(screenCenterX, screenCenterY, 'Listen to Speaker B', {color: 0xffffff}).setOrigin(0.5));
-        this.input.on('pointerdown', () => {
+        this.time.delayedCall(2500, () => this.add.rectangle(screenCenterX,screenCenterY, 240, 60, 0x808080).setInteractive()
+        .on('pointerdown', () => {
             if (!this.buttonPressed) {
                 this.buttonPressed = true;
                 speakerB.play();
                 this.cameras.main.fadeOut( 0,0,0);
                 this.time.delayedCall(14000, () => this.scene.start('partc'));
             }
-        });
+        })
+        );
+        this.time.delayedCall (2500, () => this.add.rectangle(screenCenterX, screenCenterY, 230, 50, 0xd3d3d3));
+        this.time.delayedCall(2500, () => this.add.text(screenCenterX, screenCenterY, 'Listen to Speaker B', {color: 0xffffff}).setOrigin(0.5));
     }
 }
 
@@ -96,17 +97,18 @@ class PartC extends Phaser.Scene {
         speakercprompt.play();
         let screenCenterX = this.cameras.main.worldView.x + this.cameras.main.width / 2;
         let screenCenterY = this.cameras.main.worldView.y + this.cameras.main.height / 2;
-        this.time.delayedCall (2500, () => this.add.rectangle(screenCenterX,screenCenterY, 240, 60, 0x808080));
-        this.time.delayedCall (2500, () => this.add.rectangle(screenCenterX, screenCenterY, 230, 50, 0xd3d3d3));
-        this.time.delayedCall(2500, () => this.add.text(screenCenterX, screenCenterY, 'Listen to Speaker C', {color: 0xffffff}).setOrigin(0.5));
-        this.input.on('pointerdown', () => {
+        this.time.delayedCall(2500, () => this.add.rectangle(screenCenterX,screenCenterY, 240, 60, 0x808080).setInteractive()
+        .on('pointerdown', () => {
             if (!this.buttonPressed) {
                 this.buttonPressed = true;
                 speakerC.play();
                 this.cameras.main.fadeOut( 0,0,0);
                 this.time.delayedCall(27000, () => this.scene.start('choose'));
             }
-        });
+        })
+        );
+        this.time.delayedCall (2500, () => this.add.rectangle(screenCenterX, screenCenterY, 230, 50, 0xd3d3d3));
+        this.time.delayedCall(2500, () => this.add.text(screenCenterX, screenCenterY, 'Listen to Speaker C', {color: 0xffffff}).setOrigin(0.5));
     }
 }
 
